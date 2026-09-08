@@ -66,6 +66,17 @@ Binary assets are not inlined. If a skill depends on them, `bundle.py` lists the
 at the end of the `.md` so whoever sets up the project knows what to attach to the
 project knowledge.
 
+When the flattened file runs long — as it does for the brand skills, whose
+references are the brand book itself — `bundle.py` also writes a split build:
+
+```
+dist/<skill>/instructions.md      paste into the project instructions
+dist/<skill>/knowledge/*.md       attach to the project knowledge
+```
+
+The instructions in the split build tell the model the references are attached
+files rather than files it can open, which is the difference that matters.
+
 ## Known limits
 
 - ChatGPT project instructions have a length cap. A skill whose flattened bundle

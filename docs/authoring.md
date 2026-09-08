@@ -29,6 +29,25 @@ skills/<skill-name>/
 skills install into a flat `~/.claude/skills/` namespace shared with personal and
 third-party skills, and a folder called `brand` would collide.
 
+## Sharing material between skills
+
+A skill folder is copied when it is installed, so `../shared/x.md` does not
+survive the trip. Material used by more than one skill lives in `shared/<topic>/`
+at the repository root, and each skill links to the individual files it needs:
+
+```bash
+ln -sfn ../../../shared/brand/tokens.md skills/eastwind-brand/references/tokens.md
+```
+
+Link files, never directories — a symlinked directory is not traversed reliably
+when the bundle is built. Both `validate.py` and `bundle.py` follow file symlinks
+and treat the target as if it lived inside the skill.
+
+Splitting one job into two skills is worth it when the verbs differ — designing
+and auditing have different inputs, outputs, and dispositions — and the shared
+folder is what makes the split cheap. Splitting by topic rather than by verb
+usually is not: that is what `references/` is for.
+
 ## Frontmatter
 
 ```yaml

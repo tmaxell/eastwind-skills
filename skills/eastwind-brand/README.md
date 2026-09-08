@@ -1,45 +1,63 @@
 # eastwind-brand
 
-**Статус: каркас.** `SKILL.md` содержит структуру и вопросы к автору, но не сам
-брендбук.
+Оформление артефактов по айдентике Eastwind. Парный скилл —
+[eastwind-brand-review](../eastwind-brand-review/) — проверяет уже готовое.
+
+Источник правил: `DesignDocs/Brand Guidelines_L.pdf` (v1, MVP 1, 2024, 76 с.),
+`Цвета фирм стиля EW.pdf`, `Инструкция по типографике.pdf`, открытые материалы
+брендбука. Токены и палитры вынуты из векторных заливок самого гайдлайна, поэтому
+значения точные, а не срисованные на глаз.
 
 ## Русский
 
-**Что делает.** Оформляет артефакты по брендбуку Eastwind: презентации,
-одностраничники, отчёты, схемы, веб-страницы. Проверяет готовый артефакт на
-соответствие бренду.
+**Что делает.** Собирает или переоформляет визуальный артефакт: презентацию,
+одностраничник, отчёт, схему, баннер, картинку для соцсетей, веб-страницу,
+вёрстку документа. Назначает цвета по ролям, ставит типографику, кладёт на сетку
+8, размещает логотип, выбирает графический стиль.
 
-**Когда срабатывает.** Просьбы «оформи», «сделай в нашем стиле», «проверь по
-брендбуку», «свёрстанная презентация для клиента».
+**Когда срабатывает.** «Оформи», «свёрстай», «сделай в нашем стиле»,
+«переоформи под бренд», «нужна дека для клиента».
 
-**Когда не нужен.** Написание текста и содержания — это не сюда. Текстовые
-шаблоны документов — `eastwind-documents`.
+**Когда не нужен.** Проверка готового — `eastwind-brand-review`. Написание
+текста. Сборка договоров, актов и КП по шаблонам — `eastwind-documents`.
 
-**Что нужно на входе.** Формат артефакта, аудитория (клиент / внутренний /
-партнёр), исходник, если это переоформление.
+**Что нужно на входе.** Формат и размеры, аудитория (клиент / партнёр /
+внутренний), язык, новая работа или переоформление, доступен ли фирменный шрифт
+TT Firs Neue (он коммерческий и в открытых материалах его нет — без лицензии
+используется Raleway).
 
-**Что на выходе.** Оформленный артефакт плюс перечень мест, где брендбук не даёт
-однозначного ответа.
+**Что на выходе.** Артефакт плюс короткая записка: какие токены назначены на
+какие роли, что отклонилось от гайдлайна и почему, какие вопросы гайдлайн не
+закрывает.
+
+**Что внутри.** `references/` — токены (цвета, шрифты, сетка), правила логотипа,
+графика и фотостиль, плейбуки по типам артефактов, чеклист и реестр
+противоречий в исходных материалах. `assets/logo/` — открытый набор логотипов в
+SVG и PNG. Референсы общие с ревью-скиллом и лежат в `shared/brand/`.
 
 **Запуск.** Claude: `/eastwind-brand` или само подхватится.
 ChatGPT: `python3 scripts/bundle.py eastwind-brand` → `dist/eastwind-brand.md`.
 
 ## English
 
-**What it does.** Designs artifacts to the Eastwind brand book — decks,
-one-pagers, reports, diagrams, web pages — and brand-checks existing ones.
+**What it does.** Designs or restyles a visual artifact — deck, one-pager,
+report, diagram, banner, social image, web page, document layout — to the
+Eastwind identity: color roles, typography, the 8-px grid, logo placement,
+graphic style.
 
-**Triggers on.** "Style this", "make it look like ours", "check it against the
-brand book", "a client-ready deck".
+**Triggers on.** "Style this", "lay this out", "make it look like ours", "a
+client-ready deck".
 
-**Not for.** Writing the content itself. Document text templates live in
-`eastwind-documents`.
+**Not for.** Auditing a finished artifact (`eastwind-brand-review`), writing the
+copy, or assembling contracts and proposals from templates
+(`eastwind-documents`).
 
-**Inputs.** Artifact format, audience (customer / internal / partner), the source
-file when restyling.
+**Inputs.** Format and dimensions, audience, language, new work or restyle, and
+whether TT Firs Neue is licensed in the environment — without it the artifact
+uses Raleway.
 
-**Outputs.** The styled artifact, plus a list of cases the brand book does not
-settle.
+**Outputs.** The artifact plus a handover note: tokens assigned per role, any
+deviation with its reason, and the questions the guideline leaves open.
 
 **Run it.** Claude: `/eastwind-brand`, or let it auto-trigger.
 ChatGPT: `python3 scripts/bundle.py eastwind-brand` → `dist/eastwind-brand.md`.

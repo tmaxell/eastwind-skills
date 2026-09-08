@@ -1,0 +1,1 @@
+../../../shared/brand/assets/check_brand.py

@@ -1,0 +1,1 @@
+../../../shared/brand/artifact-types.md

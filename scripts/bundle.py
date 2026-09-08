@@ -13,6 +13,7 @@ Produces two artifacts in dist/:
 
 from __future__ import annotations
 
+import os
 import re
 import sys
 import zipfile
@@ -28,6 +29,16 @@ SKIP_NAMES = {".DS_Store", ".gitkeep"}
 
 # ChatGPT project instructions have a practical ceiling; warn before it bites.
 SIZE_WARN_CHARS = 30_000
+
+
+def under(base: Path, target: str) -> Path:
+    """Resolve `target` relative to `base` without following symlinks.
+
+    Shared references are symlinked into a skill's references/ from shared/, so
+    Path.resolve() would point outside the skill folder and break the relative
+    paths the bundle is built from.
+    """
+    return Path(os.path.normpath(base / target))
 
 
 def split_frontmatter(text: str) -> tuple[str, str]:
@@ -77,13 +88,13 @@ def build_markdown(skill_dir: Path) -> str:
     # Inline every local .md the body links to, then anything else in references/.
     inlined: set[Path] = set()
     queue = [
-        (skill_dir / t).resolve()
+        under(skill_dir, t)
         for t in collect_local_links(body)
-        if (skill_dir / t).resolve().suffix == ".md"
+        if under(skill_dir, t).suffix == ".md"
     ]
     refs = skill_dir / "references"
     if refs.is_dir():
-        queue += sorted(p.resolve() for p in refs.glob("*.md"))
+        queue += sorted(refs.glob("*.md"))
 
     appendix: list[str] = []
     while queue:
@@ -96,7 +107,7 @@ def build_markdown(skill_dir: Path) -> str:
         _, content_body = split_frontmatter(content)
         appendix.append(f"\n---\n\n## Appendix: {rel.as_posix()}\n\n{content_body.rstrip()}\n")
         for t in collect_local_links(content_body):
-            nxt = (path.parent / t).resolve()
+            nxt = under(path.parent, t)
             if nxt.suffix == ".md" and nxt not in inlined:
                 queue.append(nxt)
 
@@ -135,6 +146,46 @@ def build_zip(skill_dir: Path, out: Path) -> None:
             zf.write(path, Path(skill_dir.name) / path.relative_to(skill_dir))
 
 
+def build_split(skill_dir: Path, out_dir: Path) -> int:
+    """Instructions in one file, references as separate knowledge files.
+
+    For a skill whose flattened bundle is too long to paste into a project's
+    instructions box. The instructions still have to say the appendices are
+    attached rather than openable, so the wording is added here.
+    """
+    name = skill_dir.name
+    raw_fm, body = split_frontmatter((skill_dir / "SKILL.md").read_text(encoding="utf-8"))
+    description = frontmatter_value(raw_fm, "description")
+
+    knowledge = out_dir / "knowledge"
+    knowledge.mkdir(parents=True, exist_ok=True)
+    for stale in knowledge.glob("*.md"):
+        stale.unlink()
+
+    files = []
+    refs = skill_dir / "references"
+    if refs.is_dir():
+        for ref in sorted(refs.glob("*.md")):
+            target = knowledge / ref.name
+            target.write_text(ref.read_text(encoding="utf-8"), encoding="utf-8")
+            files.append(ref.name)
+
+    listing = "\n".join(f"- `{f}`" for f in files)
+    header = (
+        f"# Skill: {name}\n\n"
+        + (f"**When this applies.** {description}\n\n" if description else "")
+        + "Follow the instructions below whenever the request matches. When it "
+        "does not, ignore this document entirely.\n\n"
+        "The documents referenced below are attached to this project as files. "
+        "Open the attached file by that name; do not treat a missing file as "
+        "permission to proceed without it.\n\n"
+        + (f"Attached:\n\n{listing}\n\n" if files else "")
+        + "---\n\n"
+    )
+    (out_dir / "instructions.md").write_text(header + body.rstrip() + "\n", encoding="utf-8")
+    return len(header) + len(body)
+
+
 def bundle(skill_dir: Path) -> None:
     DIST_DIR.mkdir(exist_ok=True)
     name = skill_dir.name
@@ -149,10 +200,21 @@ def bundle(skill_dir: Path) -> None:
     print(f"{name}")
     print(f"  {md_path.relative_to(ROOT)}   {len(md):,} chars")
     print(f"  {zip_path.relative_to(ROOT)}  {zip_path.stat().st_size:,} bytes")
+
     if len(md) > SIZE_WARN_CHARS:
+        split_dir = DIST_DIR / name
+        size = build_split(skill_dir, split_dir)
         print(
-            f"  warn: {len(md):,} chars may exceed a ChatGPT project instructions "
-            "limit; move detail into attached knowledge files"
+            f"  {len(md):,} chars is likely past a ChatGPT project instructions "
+            f"limit, so a split build was written too:"
+        )
+        print(
+            f"  {(split_dir / 'instructions.md').relative_to(ROOT)}   {size:,} chars"
+            " — paste this into the project instructions"
+        )
+        print(
+            f"  {(split_dir / 'knowledge').relative_to(ROOT)}/  "
+            "— attach these to the project knowledge"
         )
 
 

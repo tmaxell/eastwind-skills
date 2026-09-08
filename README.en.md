@@ -13,7 +13,8 @@ ChatGPT. See [docs/portability.md](docs/portability.md).
 
 | Skill | What it does | Status |
 | :---- | :----------- | :----- |
-| [eastwind-brand](skills/eastwind-brand/) | Design artifacts according to the Eastwind brand book | 🚧 scaffold |
+| [eastwind-brand](skills/eastwind-brand/) | Design artifacts to the Eastwind identity | ✅ ready |
+| [eastwind-brand-review](skills/eastwind-brand-review/) | Audit finished artifacts against the brand guideline | ✅ ready |
 | [eastwind-documents](skills/eastwind-documents/) | Produce the company's standard documents | 🚧 scaffold |
 
 Each skill ships its own `README.md` card — purpose, trigger conditions, expected
@@ -29,10 +30,18 @@ eastwind-skills/
 │       ├── README.md       card for humans
 │       ├── references/     details the model reads on demand
 │       └── assets/         templates, images, fonts
+├── shared/                 material used by more than one skill
+│   └── brand/              the brand knowledge base, logo files, check_brand.py
 ├── docs/                   authoring and portability conventions
 ├── scripts/                validation and bundling
 └── dist/                   built bundles (not committed)
 ```
+
+A skill cannot reference anything outside its own folder — the folder is copied on
+install. Shared material therefore lives in `shared/`, and a skill's `references/`
+and `assets/` hold symlinks into it, so one edit reaches every skill that uses it.
+That is how `eastwind-brand` and `eastwind-brand-review` are paired: different
+procedures, one knowledge base.
 
 ## Usage
 
