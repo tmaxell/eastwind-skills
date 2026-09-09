@@ -121,7 +121,17 @@ def from_ooxml(path: pathlib.Path):
             text = z.read(name).decode("utf-8", "ignore")
             for hx in OOXML_HEX_RE.findall(text):
                 colors[norm_hex(hx)] += 1
-            bucket = used if CONTENT_PART_RE.match(name) else declared
+            if name.endswith("word/styles.xml"):
+                # docDefaults sets the face for every run that does not override
+                # it, so it is the document's actual font, not a latent style.
+                defaults = re.search(r"<w:docDefaults>.*?</w:docDefaults>", text, re.S)
+                if defaults:
+                    for f in OOXML_FONT_RE.findall(defaults.group(0)):
+                        used[f.strip()] += 1
+                    text = text.replace(defaults.group(0), "")
+                bucket = declared
+            else:
+                bucket = used if CONTENT_PART_RE.match(name) else declared
             for f in OOXML_FONT_RE.findall(text):
                 bucket[f.strip()] += 1
     for f in used:
