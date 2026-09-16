@@ -20,8 +20,9 @@
 **Что на выходе.** Документ по шаблону плюс явный список незаполненных полей и
 сделанных допущений. Юридические формулировки не переписываются — цитируются.
 
-**Запуск.** Claude: `/eastwind-documents` или само подхватится.
-ChatGPT: `python3 scripts/bundle.py eastwind-documents` → `dist/eastwind-documents.md`.
+**Запуск.** Codex: `$eastwind-documents` или автоподбор по `description`;
+ChatGPT Desktop: выбор через `@`; Claude: `/eastwind-documents`. Для
+ChatGPT Projects и кастомных GPT: `python3 scripts/bundle.py eastwind-documents`.
 
 ## English
 
@@ -39,5 +40,6 @@ commercial proposals, SOWs, acts of acceptance, NDAs, internal memos.
 placeholders and assumptions made. Fixed legal wording is quoted, never
 paraphrased.
 
-**Run it.** Claude: `/eastwind-documents`, or let it auto-trigger.
-ChatGPT: `python3 scripts/bundle.py eastwind-documents` → `dist/eastwind-documents.md`.
+**Run it.** Codex: `$eastwind-documents` or implicit matching; ChatGPT Desktop:
+select it with `@`; Claude: `/eastwind-documents`. For ChatGPT Projects and
+custom GPTs: `python3 scripts/bundle.py eastwind-documents`.

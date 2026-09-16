@@ -27,15 +27,17 @@
 `.html`, `.css` и сравнивает с токенами. Отделяет точные совпадения от дрейфа
 (значение в одном-двух символах от токена — это опечатка, а не решение) и от
 по-настоящему чужих цветов; шрифты, реально применённые в контенте, — от просто
-объявленных в стилях. Скрипт необязателен: в ChatGPT его не будет, процедура
-работает и на глаз.
+объявленных в стилях. Скрипт необязателен: на платформах без shell процедура
+работает и визуально.
 
 ```bash
 python3 assets/check_brand.py "КП_template_april 2026_en.docx"
 ```
 
-**Запуск.** Claude: `/eastwind-brand-review` или само подхватится.
-ChatGPT: `python3 scripts/bundle.py eastwind-brand-review`.
+**Запуск.** Codex: `$eastwind-brand-review` или автоподбор по
+`description`; ChatGPT Desktop: выбор через `@`; Claude:
+`/eastwind-brand-review`. Для ChatGPT Projects и кастомных GPT:
+`python3 scripts/bundle.py eastwind-brand-review`.
 
 ## English
 
@@ -60,5 +62,6 @@ open.
 actually present in a file and diffs them against the tokens. Optional — the
 procedure works without it.
 
-**Run it.** Claude: `/eastwind-brand-review`, or let it auto-trigger.
-ChatGPT: `python3 scripts/bundle.py eastwind-brand-review`.
+**Run it.** Codex: `$eastwind-brand-review` or implicit matching; ChatGPT
+Desktop: select it with `@`; Claude: `/eastwind-brand-review`. For ChatGPT
+Projects and custom GPTs: `python3 scripts/bundle.py eastwind-brand-review`.

@@ -4,8 +4,8 @@
 в котором лежат инструкции для ИИ-ассистента: как выполнять конкретную рабочую
 задачу по правилам компании.
 
-Скиллы написаны так, чтобы работать и в Claude (Claude Code, Cowork, claude.ai),
-и в ChatGPT. См. [docs/portability.md](docs/portability.md).
+Скиллы написаны так, чтобы работать в Codex и ChatGPT, а также в Claude
+(Claude Code, Cowork, claude.ai). См. [docs/portability.md](docs/portability.md).
 
 English version: [README.en.md](README.en.md)
 
@@ -24,6 +24,7 @@ English version: [README.en.md](README.en.md)
 
 ```
 eastwind-skills/
+├── .agents/skills/         точки входа для автоподхвата в Codex
 ├── skills/                 скиллы, по папке на каждый
 │   └── <skill-name>/
 │       ├── SKILL.md        инструкция для модели (главный файл)
@@ -44,6 +45,27 @@ eastwind-skills/
 а база знаний по бренду одна.
 
 ## Как пользоваться
+
+### Codex и ChatGPT Desktop
+
+Codex ищет проектные скиллы в `.agents/skills/` от текущей папки до корня
+репозитория. В этом репозитории уже лежат симлинки на все скиллы, поэтому
+достаточно открыть репозиторий в Codex. Новый или изменённый скилл обычно
+подхватывается автоматически; если он не появился, перезапустите Codex.
+
+Скилл можно вызвать явно: в Codex CLI и IDE наберите `$eastwind-brand` (или
+откройте `/skills`), а в ChatGPT Desktop выберите его через `@`. Без явного
+вызова Codex может подобрать скилл сам, когда запрос совпадает с его
+`description`.
+
+Чтобы использовать скиллы во всех репозиториях, установите их в личную папку:
+
+```bash
+mkdir -p ~/.agents/skills
+ln -s "$(pwd)/skills/eastwind-brand" ~/.agents/skills/eastwind-brand
+```
+
+Актуальные правила обнаружения и вызова: [OpenAI — Build skills](https://learn.chatgpt.com/docs/build-skills).
 
 ### Claude Code / Cowork
 
@@ -67,12 +89,13 @@ python3 scripts/bundle.py eastwind-brand
 Готовый `dist/eastwind-brand.zip` загружается в разделе Skills в настройках
 claude.ai.
 
-### ChatGPT
+### ChatGPT Projects и кастомные GPT
 
-Тот же скрипт кладёт рядом `dist/eastwind-brand.md` — одиночный самодостаточный
-файл, в котором все `references/` уже вклеены в текст. Его содержимое идёт в
-инструкции проекта (Project instructions) или в описание кастомного GPT.
-Файлы из `assets/` при необходимости прикладываются в knowledge проекта.
+Когда файловые скиллы недоступны, тот же скрипт кладёт рядом
+`dist/eastwind-brand.md` — одиночный самодостаточный файл, в котором все
+`references/` уже вклеены в текст. Его содержимое идёт в инструкции проекта
+(Project instructions) или в описание кастомного GPT. Файлы из `assets/` при
+необходимости прикладываются в knowledge проекта.
 
 ## Разработка
 

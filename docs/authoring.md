@@ -20,10 +20,16 @@ disjoint, not by cross-references.
 ```
 skills/<skill-name>/
 ├── SKILL.md        required
-├── README.md       required — the human-facing card
+├── README.md       required in this repository — the human-facing card
+├── agents/         optional — Codex UI metadata and invocation policy
 ├── references/     optional — .md files the model reads on demand
 └── assets/         optional — templates, fonts, images, example files
 ```
+
+Repository-scoped Codex discovery uses `.agents/skills/`. This repository keeps
+the canonical sources under `skills/` for cross-platform packaging and exposes
+them to Codex through relative symlinks in `.agents/skills/`. Global Codex skills
+belong in `~/.agents/skills/`.
 
 `<skill-name>` is kebab-case, prefixed with `eastwind-`. The prefix matters:
 skills install into a flat `~/.claude/skills/` namespace shared with personal and
@@ -65,8 +71,10 @@ description: Apply the Eastwind brand book to decks, documents, and visual artif
 | `metadata` | no | Free-form key/value, e.g. `owner`, `updated`. |
 
 Do **not** use `allowed-tools`, `arguments`, `disable-model-invocation`,
-`user-invocable-only`, or `model`. They are Claude Code-only and break portability
-— see [portability.md](portability.md).
+`user-invocable-only`, or `model`. They are Claude Code-specific and break
+portability — see [portability.md](portability.md). Codex-specific UI metadata,
+invocation policy, and dependencies belong in optional `agents/openai.yaml`, not
+in `SKILL.md` frontmatter.
 
 ### Writing the description
 

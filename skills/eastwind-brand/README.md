@@ -35,8 +35,9 @@ TT Firs Neue (он коммерческий и в открытых матери�
 противоречий в исходных материалах. `assets/logo/` — открытый набор логотипов в
 SVG и PNG. Референсы общие с ревью-скиллом и лежат в `shared/brand/`.
 
-**Запуск.** Claude: `/eastwind-brand` или само подхватится.
-ChatGPT: `python3 scripts/bundle.py eastwind-brand` → `dist/eastwind-brand.md`.
+**Запуск.** Codex: `$eastwind-brand` или автоподбор по `description`;
+ChatGPT Desktop: выбор через `@`; Claude: `/eastwind-brand`. Для
+ChatGPT Projects и кастомных GPT: `python3 scripts/bundle.py eastwind-brand`.
 
 ## English
 
@@ -59,5 +60,6 @@ uses Raleway.
 **Outputs.** The artifact plus a handover note: tokens assigned per role, any
 deviation with its reason, and the questions the guideline leaves open.
 
-**Run it.** Claude: `/eastwind-brand`, or let it auto-trigger.
-ChatGPT: `python3 scripts/bundle.py eastwind-brand` → `dist/eastwind-brand.md`.
+**Run it.** Codex: `$eastwind-brand` or implicit matching; ChatGPT Desktop:
+select it with `@`; Claude: `/eastwind-brand`. For ChatGPT Projects and custom
+GPTs: `python3 scripts/bundle.py eastwind-brand`.
