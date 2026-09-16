@@ -1,16 +1,17 @@
 ---
 name: eastwind-brand-review
-description: Audit a finished artifact against the Eastwind brand guideline and report violations by severity. Checks colors against the palette, typefaces and weights, the 8-px grid, logo handling, graphic and photographic style. Use when the user asks to check, review, audit, or validate a deck, document, PDF, image, or page for brand compliance, or asks whether something is on brand. Do not use to create or restyle an artifact — that is eastwind-brand.
+description: Audit a finished artifact against the Eastwind brand guideline, report violations by severity, and produce an actionable correction plan. Checks colors against the palette, typefaces and weights, the 8-px grid, logo handling, graphic and photographic style. Use when the user asks to check, review, audit, or validate a deck, document, PDF, image, or page for brand compliance, or asks whether something is on brand. Do not use to create or restyle an artifact — that is eastwind-brand.
 metadata:
   owner: TODO
   source: DesignDocs/Brand Guidelines_L.pdf (v1, MVP 1, 2024) and the open brand materials
-  updated: 2026-09-08
+  updated: 2026-09-16
 ---
 
 # Eastwind brand review
 
-Judge an artifact that already exists. The output is a report, not a redesign:
-what is wrong, how badly, and what it should have been.
+Judge an artifact that already exists. The output is a report plus an actionable
+correction plan, not a redesign: what is wrong, how badly, what it should have
+been, and in what order to correct it.
 
 Be adversarial. The point of a separate review is that it does not defend earlier
 decisions. Do not soften a finding because the artifact is otherwise good, and do
@@ -84,6 +85,14 @@ Establish before judging:
    report the top ten and say how many more of each severity remain. A flat list
    of forty findings does not get fixed.
 
+6. **Build the correction plan.** Turn the reported findings into an ordered,
+   implementation-ready plan. Group repeated instances when one systematic
+   change resolves them. For every step, state the affected pages or components,
+   the exact target state (token, typeface, weight, spacing, logo variant, or
+   layout rule), and how to verify the result. Put blockers first, then majors,
+   then minors; identify dependencies or brand-owner decisions that must happen
+   before a step can be completed.
+
 ## Rules
 
 - **Every finding cites a rule and names the correction.** "The blue looks off" is
@@ -97,6 +106,9 @@ Establish before judging:
   measurements, Pantone equivalents, the color wheel order. Silence is not a
   violation; say the rule does not exist.
 - **Do not fix.** Describe the correction; leave the editing to a separate pass.
+- **Always include the correction plan.** It is part of the audit deliverable,
+  even when there is only one finding. The plan authorizes no edits: it specifies
+  the work for a later implementation pass.
 - **Do not grade on a curve.** A blocker in an internal deck is still a blocker.
 
 ## Output
@@ -122,6 +134,13 @@ Method: <measured with the script | visual>
 ### Open questions
 
 <rules the guideline does not settle, or cases where sources conflict>
+
+### Correction plan
+
+1. [blocker] <affected pages or components> — <concrete change> —
+   <exact target state> — verify: <observable acceptance check>
+2. [major] <affected pages or components> — <concrete change> —
+   <exact target state> — verify: <observable acceptance check>
 ```
 
 **Language:** write the report in the language of the request; default to Russian
